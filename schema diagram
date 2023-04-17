@@ -1,0 +1,148 @@
+MariaDB [online_food_delivery]> desc restaurant;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| rest_id    | int(10)     | NO   | PRI | NULL    |       |
+| rest_add   | varchar(10) | YES  |     | NULL    |       |
+| rest_phone | int(10)     | YES  |     | NULL    |       |
+| rest_name  | varchar(10) | YES  |     | NULL    |       |
+| rest_type  | varchar(10) | YES  |     | NULL    |       |
+| rest_catg  | varchar(10) | YES  |     | NULL    |       |
+| cust_id    | int(10)     | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+
+
+MariaDB [online_food_delivery]> desc customer
+    -> ;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| cust_id    | int(10)     | NO   | PRI | NULL    |       |
+| cust_name  | varchar(10) | YES  |     | NULL    |       |
+| cust_phone | int(10)     | YES  |     | NULL    |       |
+| cust_add   | varchar(10) | YES  |     | NULL    |       |
+| rest_id    | int(10)     | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+5 rows in set (0.002 sec)
+
+
+MariaDB [online_food_delivery]> desc restaurant;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| rest_id    | int(10)     | NO   | PRI | NULL    |       |
+| rest_add   | varchar(10) | YES  |     | NULL    |       |
+| rest_phone | int(10)     | YES  |     | NULL    |       |
+| rest_name  | varchar(10) | YES  |     | NULL    |       |
+| rest_type  | varchar(10) | YES  |     | NULL    |       |
+| rest_catg  | varchar(10) | YES  |     | NULL    |       |
+| cust_id    | int(10)     | YES  | MUL | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+7 rows in set (0.002 sec)
+
+MariaDB [online_food_delivery]> desc orders;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| order_id     | int(10)     | NO   | PRI | NULL    |       |
+| rest_id      | int(10)     | YES  | MUL | NULL    |       |
+| cust_id      | int(10)     | YES  | MUL | NULL    |       |
+| pay_method   | varchar(10) | YES  |     | NULL    |       |
+| food_ordered | varchar(10) | YES  |     | NULL    |       |
+| food_price   | int(10)     | YES  |     | NULL    |       |
+| quantity     | int(10)     | YES  |     | NULL    |       |
+| total        | int(10)     | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+8 rows in set (0.002 sec)
+
+MariaDB [online_food_delivery]> desc date_time;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| order_id | int(10)     | YES  | MUL | NULL    |       |
+| rest_id  | int(10)     | YES  | MUL | NULL    |       |
+| cust_id  | int(10)     | YES  | MUL | NULL    |       |
+| date     | date        | YES  |     | NULL    |       |
+| time     | varchar(10) | YES  |     | NULL    |       |
+| day      | varchar(10) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+6 rows in set (0.002 sec)
+
+
+
+MariaDB [online_food_delivery]> select * from restaurant;
++---------+-----------+------------+----------------+-----------+-----------+---------+
+| rest_id | rest_add  | rest_phone | rest_name      | rest_type | rest_catg | cust_id |
++---------+-----------+------------+----------------+-----------+-----------+---------+
+|    1001 | mulki     | 8372738491 | the_spice_root | 3-star    | veg       |    NULL |
+|    1002 | padubidri | 7372734491 | curry_spoon    | 5-star    | non-veg   |    NULL |
+|    1003 | udupi     | 6472711491 | suggi          | 2-star    | veg       |    NULL |
+|    1004 | karkala   | 7772738492 | suraj          | 5-star    | veg       |    NULL |
+|    1005 | mangalore | 6672730091 | suvarna        | 7-star    | non-veg   |    NULL |
++---------+-----------+------------+----------------+-----------+-----------+---------+
+
+MariaDB [online_food_delivery]> select * from customer;
++---------+-----------+------------+----------+---------+
+| cust_id | cust_name | cust_phone | cust_add | rest_id |
++---------+-----------+------------+----------+---------+
+|    3001 | virat     | 6738190876 | puttur   |    1001 |
+|    3002 | rohit     | 8838000899 | sullia   |    1002 |
+|    3003 | dhoni     | 7712188874 | aduve    |    1003 |
+|    3004 | rahul     | 8838190809 | bajpe    |    1004 |
+|    3005 | virat     | 8838190822 | malpe    |    1005 |
++---------+-----------+------------+----------+---------+
+5 rows in set (0.000 sec)
+
+MariaDB [online_food_delivery]> select * from orders;
++----------+---------+---------+------------+--------------+------------+----------+-------+
+| order_id | rest_id | cust_id | pay_method | food_ordered | food_price | quantity | total |
++----------+---------+---------+------------+--------------+------------+----------+-------+
+|     5002 |    1002 |    3002 | UPI        | chic_tikka   |        140 |        2 |   280 |
+|     5003 |    1003 |    3003 | COD        | gobi         |        150 |        5 |   750 |
+|     5004 |    1004 |    3004 | UPI        | biryani      |        200 |        3 |   600 |
+|     5005 |    1005 |    3005 | COD        | egg_masala   |        250 |        5 |  1250 |
++----------+---------+---------+------------+--------------+------------+----------+-------+
+4 rows in set (0.000 sec)
+
+
+MariaDB [online_food_delivery]> select * from date_time;
++----------+---------+---------+------------+---------+-----------+
+| order_id | rest_id | cust_id | date       | time    | day       |
++----------+---------+---------+------------+---------+-----------+
+|     5001 |    1001 |    3001 | 2023-01-21 | 12:00pm | thursday  |
+|     5002 |    1002 |    3002 | 2023-05-06 | 2:00pm  | monday    |
+|     5004 |    1004 |    3004 | 2022-03-18 | 4:00pm  | wednesday |
+|     5005 |    1005 |    3005 | 2021-06-11 | 9:00pm  | sunday    |
+|     5003 |    1003 |    3003 | 2022-02-17 | 5:00pm  | saturday  |
++----------+---------+---------+------------+---------+-----------+
+5 rows in set (0.001 sec)
+
+
+MariaDB [online_food_delivery]> select * from delivery;
++-------------+-----------------+---------+----------+----------+---------+
+| delivery_id | delivery_charge | cust_id | distance | cust_add | rest_id |
++-------------+-----------------+---------+----------+----------+---------+
+|        7001 |              40 |    3001 | 5km      | puttur   |    1001 |
+|        7002 |             160 |    3002 | 10km     | sullia   |    1002 |
+|        7003 |              80 |    3003 | 7km      | aduve    |    1003 |
+|        7004 |              30 |    3004 | 3km      | bajpe    |    1004 |
+|        7005 |             100 |    3005 | 8km      | malpe    |    1005 |
++-------------+-----------------+---------+----------+----------+---------+
+5 rows in set (0.001 sec)
+
+
+MariaDB [online_food_delivery]> select sum(food_price*quantity) as total from orders where order_id=5001;
++-------+
+| total |
++-------+
+|   240 |
++-------+
+1 row in set (0.001 sec)
+
+MariaDB [online_food_delivery]> select cust_name,cust_phone from customer where cust_id in(select cust_id from orders where order_id=5004);
++-----------+------------+
+| cust_name | cust_phone |
++-----------+------------+
+| rahul     | 8838190809 |
++-----------+------------+
+1 row in set (0.001 sec)
