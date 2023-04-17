@@ -1,0 +1,65 @@
+create database online_food_delivery;
+**************************************************************************************
+
+create table restaurant (rest_id int(10) primary key,rest_add varchar(10),rest_phone int(10),rest_name varchar(10),rest_type varchar(10),rest_catg varchar(10),cust_id int(10) foreign key references customer(cust_id));
+
+
+
+create table customer (cust_id int(10) primary key,cust_name varchar(10),cust_phone int(10),cust_add varchar(10),rest_id int(10) foreign key references restaurant(rest_id));
+
+
+create table order(order_id int(10) primary key,rest_id int(10) foreign key references restaurant(rest_id),cust_id int foreign key references customer(cust_id), pay_method varchar(10),food_ordered varchar(10),food_price int(10),quantity int(10),total int(10));
+
+
+create table date_time(order_id int(10) foreign key references order(order_id),rest_id int(10) foreign key references restaurant(rest_id),cust_id int(10) foreign key references customer(cust_id),date date,time varchar(10),day varchar(10));
+
+
+create table discount(disc_coup_id int(10) primary key,rest_id int(10) foreign key references restaurant(rest
+
+
+
+create table delivery(delivery_id int(10) primary key,delivery_charge int(10),cust_id int(10) foreign key references customer(cust_id),distance varchar(10),cust_add varchar(10) foreign key references customer(cust_add),rest_id int(10) foreign key references restaurant(rest_id));
+
+***********************************************************************************************************************************
+
+insert into restaurant(rest_id,rest_add,rest_phone,rest_name,rest_type,rest_catg) values(1001,"mulki",8372738491,"the_spice_root","3-star","veg")
+insert into restaurant(rest_id,rest_add,rest_phone,rest_name,rest_type,rest_catg) values(1002,"padubidri",7372734491,"curry_spoon","5-star","non-veg");
+insert into restaurant(rest_id,rest_add,rest_phone,rest_name,rest_type,rest_catg) values(1003,"udupi",6472711491,"suggi","2-star","veg");
+insert into restaurant(rest_id,rest_add,rest_phone,rest_name,rest_type,rest_catg) values(1004,"karkala",7772738492,"suraj","5-star","veg");
+insert into restaurant(rest_id,rest_add,rest_phone,rest_name,rest_type,rest_catg) values(1005,"mangalore",6672730091,"suvarna","7-star","non-veg");
+
+
+insert into customer(cust_id,cust_name,cust_phone,cust_add,rest_id) values(3001,"virat",6738190811,"puttur",1001);
+insert into customer(cust_id,cust_name,cust_phone,cust_add,rest_id) values(3002,"rohit",8838000899,"sullia",1002);
+insert into customer(cust_id,cust_name,cust_phone,cust_add,rest_id) values(3003,"dhoni",7712188874,"aduve",1003);
+insert into customer(cust_id,cust_name,cust_phone,cust_add,rest_id) values(3004,"rahul",8838190809,"bajpe",1004);
+insert into customer(cust_id,cust_name,cust_phone,cust_add,rest_id) values(3005,"virat",8838190822,"malpe",1005);
+
+
+insert into orders(order_id,rest_id,cust_id,pay_method,food_ordered,food_price,quantity,total) values(5001,1001,3001,"COD","paneer_masala",80,3,240);
+insert into orders(order_id,rest_id,cust_id,pay_method,food_ordered,food_price,quantity,total) values(5002,1002,3002,"UPI","chic_tikka",140,2,280);
+insert into orders(order_id,rest_id,cust_id,pay_method,food_ordered,food_price,quantity,total) values(5003,1003,3003,"COD","gobi",150,5,750);
+insert into orders(order_id,rest_id,cust_id,pay_method,food_ordered,food_price,quantity,total) values(5004,1004,3004,"UPI","biryani",200,3,600);
+insert into orders(order_id,rest_id,cust_id,pay_method,food_ordered,food_price,quantity,total) values(5005,1005,3005,"COD","egg_masala",250,5,1250);
+
+
+insert into date_time(order_id,rest_id,cust_id,date,time,day) values(5001,1001,3001,"2023/01/21","12:00pm","thursday");
+insert into date_time(order_id,rest_id,cust_id,date,time,day) values(5002,1002,3002,"2023/05/06","2:00pm","monday");
+insert into date_time(order_id,rest_id,cust_id,date,time,day) values(5003,1003,3003,"2022/02/17","5:00pm","saturday");
+insert into date_time(order_id,rest_id,cust_id,date,time,day) values(5004,1004,3004,"2022/03/18","4:00pm","wednesday");
+insert into date_time(order_id,rest_id,cust_id,date,time,day) values(5005,1005,3005,"2021/06/11","9:00pm","sunday");
+
+
+
+insert into delivery(delivery_id,delivery_charge,cust_id,distance,cust_add,rest_id) values(7001,40,3001,"5km","puttur",1001);
+insert into delivery(delivery_id,delivery_charge,cust_id,distance,cust_add,rest_id) values(7002,160,3002,"10km","sullia",1002);
+insert into delivery(delivery_id,delivery_charge,cust_id,distance,cust_add,rest_id) values(7003,80,3003,"7km","aduve",1001);
+insert into delivery(delivery_id,delivery_charge,cust_id,distance,cust_add,rest_id) values(7004,30,3004,"3km","bajpe",1001);
+insert into delivery(delivery_id,delivery_charge,cust_id,distance,cust_add,rest_id) values(7005,100,3005,"8km","malpe",1001);
+
+************************************************************************************************************************************
+total price of a specific order
+select sum(food_price*quantity) as total from orders where order_id=5001;
+
+name and phone number of a customer who placed an order
+select cust_name,cust_phone from customer where cust_id in(select cust_id from orders where order_id=5004);
