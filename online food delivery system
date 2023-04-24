@@ -63,3 +63,34 @@ select sum(food_price*quantity) as total from orders where order_id=5001;
 
 name and phone number of a customer who placed an order
 select cust_name,cust_phone from customer where cust_id in(select cust_id from orders where order_id=5004);
+********************************************************************************************************************
+QUERIES:-
+
+1. To update delivery charge column:
+ update delivery set delivery_charge=distance*20;
+
+2. To empty the values in the deliver charge column:
+   update delivery set delivery_charge =NULL;
+	
+3. Retrieve the average delivery charge for all orders placed at a particular restaurant:
+
+   SELECT AVG(delivery_charge) AS avg_delivery_charge
+   FROM delivery
+   WHERE rest_id = 1005;
+
+
+4. Retrieve the details of the most ordered food item at a particular restaurant:
+
+   SELECT food_ordered, SUM(quantity) AS total_ordered
+   FROM orders
+   WHERE rest_id = 1005
+   GROUP BY food_ordered
+   ORDER BY total_ordered DESC
+   LIMIT 1;
+
+5. Retrieve the details of all customers who have placed an order at a particular restaurant:
+
+    SELECT c.*FROM Customer c
+    INNER JOIN orders o ON c.cust_id = o.cust_id
+    WHERE o.rest_id = 1005;
+
